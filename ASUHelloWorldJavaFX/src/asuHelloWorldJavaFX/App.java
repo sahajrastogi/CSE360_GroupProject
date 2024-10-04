@@ -27,16 +27,46 @@ public class App extends Application {
     	
     	InitialPage initPage = new InitialPage();
     	SetUserUpPage setUpPage = new SetUserUpPage();
+    	LoginPage loginPage = new LoginPage();
+    	HomePage homePage = new HomePage();
+    	OTPSetupPage otpPage = new OTPSetupPage();
+
     	        
         initPage.btn.setOnAction(e -> {
+        	primaryStage.setTitle("Set Up Page");
         	setUpPage.updateUser(initPage.textField.getText());
         	primaryStage.setScene(setUpPage.scene);
         });      
-        setUpPage.btn.setOnAction(e -> primaryStage.setScene(initPage.scene));
+        setUpPage.btn.setOnAction(e -> {
+        	primaryStage.setTitle("Home Page");
+        	primaryStage.setScene(homePage.scene);
+        });
 
-        primaryStage.setTitle("Scene Switcher");
+        homePage.logout.setOnAction(e ->{
+        	primaryStage.setTitle("Login Page");
+        	primaryStage.setScene(loginPage.scene);
+        });
+        
+        loginPage.btn.setOnAction(e ->{
+        	//need to check if to be routed to set up user page
+        	primaryStage.setTitle("Home Page");
+        	primaryStage.setScene(homePage.scene);
+        });
+        loginPage.otplogin.setOnAction(e ->{
+        	primaryStage.setTitle("OTP Page");
+        	primaryStage.setScene(otpPage.scene);
+        });
+        
+        otpPage.btn.setOnAction(e ->{
+        	primaryStage.setTitle("Login Page");
+        	primaryStage.setScene(loginPage.scene);
+        });
+        
+    	primaryStage.setTitle("Initial Page");
         primaryStage.setScene(initPage.scene); // Start with Scene 1
         primaryStage.show();
+        
+        
     }
     
     public int indexFromUsername(String s) {

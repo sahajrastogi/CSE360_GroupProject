@@ -14,32 +14,23 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-public class SetUserUpPage {
+public class OTPSetupPage {
 
 	public Scene scene;
 	public Button btn;
 	public String currUser;
-	public SetUserUpPage() {
+	public OTPSetupPage() {
 		btn = new Button("Submit");
         
         
-
+        Label userLabel = new Label("Username:");
+        TextField userField = new TextField();
         
-        Label fNameLabel = new Label("First Name:");
-        TextField fNameField = new TextField();
+        Label passwordLabel = new Label("Password:");
+        PasswordField passwordField = new PasswordField();
         
-        Label mNameLabel = new Label("Middle Name:");
-        TextField mNameField = new TextField();
-        
-        Label lNameLabel = new Label("Last Name:");
-        TextField lNameField = new TextField();
-        
-        Label pNameLabel = new Label("Preferred Name:");
-        TextField pNameField = new TextField();
-        
-        Label eLabel = new Label("email:");
-        TextField eField = new TextField();
-        
+        Label cPasswordLabel = new Label("Confirm Password:");
+        PasswordField cPasswordField = new PasswordField();
         
        // btn.setOnAction(e -> {
 //            if (passwordField.getText().equals(cPasswordField.getText())) {
@@ -60,16 +51,12 @@ public class SetUserUpPage {
         grid.setVgap(10);
         grid.setHgap(10);
 
-        grid.add(fNameLabel, 0, 1);
-        grid.add(fNameField, 1, 1);
-        grid.add(mNameLabel, 0, 2);
-        grid.add(mNameField, 1, 2);
-        grid.add(lNameLabel, 0, 3);
-        grid.add(lNameField, 1, 3);
-        grid.add(pNameLabel, 0, 4);
-        grid.add(pNameField, 1, 4);
-        grid.add(eLabel, 0, 5);
-        grid.add(eField, 1, 5);
+        grid.add(userLabel, 0, 0);
+        grid.add(userField, 1, 0);
+        grid.add(passwordLabel, 0, 6);
+        grid.add(passwordField, 1, 6);
+        grid.add(cPasswordLabel, 0, 7);
+        grid.add(cPasswordField, 1, 7);
         grid.add(btn, 1, 8);
         scene = new Scene(grid, App.WIDTH, App.HEIGHT);
         

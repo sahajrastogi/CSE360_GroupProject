@@ -11,14 +11,19 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-public class InitialPage {
+public class HomePage {
 
 	public Scene scene;
 	public Button btn;
-    public TextField textField;
+	public Button logout;
 
-	public InitialPage() {
-		btn = new Button("Get Started Here");
+    public TextField textField;
+    public String role;
+    public User us;
+
+	public HomePage() {
+		logout = new Button("Logout");
+
 		GridPane grid = new GridPane();
 		grid.setPadding(new Insets(10, 10, 10, 10));
         
@@ -26,7 +31,9 @@ public class InitialPage {
         grid.setHgap(10);
         textField = new TextField();
 
-        grid.add(btn,0,0);
+        grid.add(textField,0,0);
+        grid.add(logout,0,1);
+
         scene = new Scene(grid, App.WIDTH, App.HEIGHT);
         
         
