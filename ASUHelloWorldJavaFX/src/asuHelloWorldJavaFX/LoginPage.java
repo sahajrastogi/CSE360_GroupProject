@@ -34,9 +34,11 @@ public class LoginPage {
 
 	public LoginPage() {
 		btn = new Button("Submit");
-		otplogin = new Button("New User");
+		otplogin = new Button("Create Account");
 
         
+		Label ret = new Label("For returning users:");
+		Label first = new Label("For first time users:");
         Label userLabel = new Label("Username:");
         userField = new TextField();
         
@@ -59,18 +61,20 @@ public class LoginPage {
         grid.setVgap(10);
         grid.setHgap(10);
 
-        grid.add(userLabel, 0, 0);
-        grid.add(userField, 1, 0);
-        grid.add(passwordLabel, 0, 1);
-        grid.add(passwordField, 1, 1);
-        grid.add(roleLabel, 0, 2);
-        grid.add(comboBox, 1, 2);
+        grid.add(ret, 1, 0);
+        grid.add(userLabel, 0, 1);
+        grid.add(userField, 1, 1);
+        grid.add(passwordLabel, 0, 2);
+        grid.add(passwordField, 1, 2);
+        grid.add(roleLabel, 0, 3);
+        grid.add(comboBox, 1, 3);
 
-        grid.add(btn, 1, 3);
+        grid.add(btn, 1, 4);
         
-        grid.add(otpLabel, 0, 5);
-        grid.add(otpField, 1, 5);
-        grid.add(otplogin, 1, 6);
+        grid.add(first, 1, 6);
+        grid.add(otpLabel, 0, 7);
+        grid.add(otpField, 1, 7);
+        grid.add(otplogin, 1, 8);
 
         BorderPane totalPage = new BorderPane();
         totalPage.setCenter(grid);

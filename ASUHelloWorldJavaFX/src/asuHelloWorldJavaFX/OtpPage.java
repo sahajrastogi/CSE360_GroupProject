@@ -33,7 +33,7 @@ public class OtpPage {
     public PasswordField cPasswordField;
     
 	public OtpPage() {
-		btn = new Button("Submit");
+		btn = new Button("Create Account");
         
         
         Label userLabel = new Label("Username:");
@@ -45,6 +45,8 @@ public class OtpPage {
         Label cPasswordLabel = new Label("Confirm Password:");
         cPasswordField = new PasswordField();
         
+        Label create = new Label("Create a username and password:");
+
         
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(10, 10, 10, 10));
@@ -52,13 +54,15 @@ public class OtpPage {
         grid.setVgap(10);
         grid.setHgap(10);
 
-        grid.add(userLabel, 0, 0);
-        grid.add(userField, 1, 0);
-        grid.add(passwordLabel, 0, 1);
-        grid.add(passwordField, 1, 1);
-        grid.add(cPasswordLabel, 0, 2);
-        grid.add(cPasswordField, 1, 2);
-        grid.add(btn, 1, 3);
+        grid.add(create, 0, 0);
+
+        grid.add(userLabel, 0, 1);
+        grid.add(userField, 1, 1);
+        grid.add(passwordLabel, 0, 2);
+        grid.add(passwordField, 1, 2);
+        grid.add(cPasswordLabel, 0, 3);
+        grid.add(cPasswordField, 1, 3);
+        grid.add(btn, 1, 4);
         
         BorderPane totalPage = new BorderPane();
         totalPage.setCenter(grid);
