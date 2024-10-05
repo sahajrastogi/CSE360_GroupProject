@@ -19,9 +19,11 @@ public class HomePage {
 
     public TextField textField;
     public String role;
-    public User us;
+    public User u;
+    public String title = "Home Page";
 
 	public HomePage() {
+		
 		logout = new Button("Logout");
 
 		GridPane grid = new GridPane();
@@ -35,7 +37,28 @@ public class HomePage {
         grid.add(logout,0,1);
 
         scene = new Scene(grid, App.WIDTH, App.HEIGHT);
-        
-        
+	}
+	
+	public void setSceneFromRole(){
+		if(role == "Student") {
+			setStudentScene();
+		} else if (role.equals("Admin")) {
+			setAdminScene();
+		} else if(role.equals("Instructor")) {
+			setInstructorScene();
+		}
+	}
+	
+	public void setAdminScene() {
+		
+	}
+	
+	public void setStudentScene() {
+		
+	}
+	
+	public void setInstructorScene() {
+		
 	}
 }
+
