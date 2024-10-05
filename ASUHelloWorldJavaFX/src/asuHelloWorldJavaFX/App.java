@@ -52,6 +52,9 @@ public class App extends Application {
         setUpPage.btn.setOnAction(e -> {
         	//need to do alerts if invalid name or password
         	setUpPage.updateUserInfo();
+        	homePage.u = setUpPage.u;
+			homePage.role = setUpPage.role;
+			homePage.setSceneFromRole();
         	primaryStage.setTitle(homePage.title);
         	primaryStage.setScene(homePage.scene);
         });
@@ -85,6 +88,7 @@ public class App extends Application {
             		primaryStage.setScene(homePage.scene);
         		} else {
         			setUpPage.u=u;
+        			setUpPage.role = loginPage.comboBox.getSelectionModel().getSelectedItem();
         			setUpPage.clearFields();
         			primaryStage.setTitle(setUpPage.title);
             		primaryStage.setScene(setUpPage.scene);

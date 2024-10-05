@@ -21,12 +21,14 @@ public class SetUserUpPage {
 	public Scene scene;
 	public Button btn;
 	public User u;
+	public String role;
 	
     public TextField fNameField;
     public TextField mNameField;
     public TextField lNameField;
     public TextField pNameField;
     public TextField eField;
+    
 
     public String title = "Set Up Page";
     
