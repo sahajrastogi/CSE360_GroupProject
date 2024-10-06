@@ -6,14 +6,14 @@ public class User {
 	public boolean isInstructor = false;
 	public boolean passwordIsOTP;
 	public boolean infoSetup;
-	public String email;
+	public String email = "";
 	public String username = "";
 	public char[] password;
 	public String expireTime;
-	public String firstName;
-	public String middleName;
-	public String lastName;
-	public String preferredName;
+	public String firstName = "";
+	public String middleName = "";
+	public String lastName = "";
+	public String preferredName = "";
 
 	public User() {
 		passwordIsOTP = true;

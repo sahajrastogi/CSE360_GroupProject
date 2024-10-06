@@ -31,24 +31,34 @@ public class App extends Application {
     	users.add(first);
     	
     	
+    	User convenience = new User();
+    	convenience.password = "a".toCharArray();
+    	convenience.username = "a";
+    	convenience.isAdmin = true;
+    	convenience.infoSetup = true;
+    	convenience.passwordIsOTP = false;
+    	users.add(convenience);
+    	
     	System.out.println("ASU Hello World!");
     	System.out.println("It started!");
     	
+    	//Initialize all pages in the flow of the program
     	InitialPage initPage = new InitialPage();
     	SetUserUpPage setUpPage = new SetUserUpPage();
     	LoginPage loginPage = new LoginPage();
     	HomePage homePage = new HomePage();
     	OtpPage otpPage = new OtpPage();
 
-    	        
+    	
+    	//Sets the action of the initialization page to go the login Page        
         initPage.btn.setOnAction(e -> {
-        	//done
         	loginPage.clearFields();
         	primaryStage.setTitle(loginPage.title);
         	primaryStage.setScene(loginPage.scene);
         });   
         
         
+        //Sets the transition for the set up page to the home page and passes along user information
         setUpPage.btn.setOnAction(e -> {
         	//need to do alerts if invalid name or password
         	setUpPage.updateUserInfo();
@@ -59,34 +69,43 @@ public class App extends Application {
         	primaryStage.setScene(homePage.scene);
         });
 
+        //sets transition for the home page
         homePage.logout.setOnAction(e ->{
-        	//probably done
         	loginPage.clearFields();
         	primaryStage.setTitle(loginPage.title);
         	primaryStage.setScene(loginPage.scene);
         });
         
+        
+        //Sets the transition for the normal login page
         loginPage.btn.setOnAction(e ->{
         	
+        	//Attempt to login
         	int res = loginPage.login(users,loginPage.userField.getText(),loginPage.passwordField.getText(),loginPage.comboBox.getSelectionModel().getSelectedItem());
         	if(res == -1) {
-        		//error message
+        		//Error message
         		Alert alert = new Alert(AlertType.ERROR);
         		alert.setHeaderText("Error");
         		alert.setContentText("Invalid username, password or role selection");
         		alert.showAndWait();
 
         	} else {
-            	//need to check if to be routed to set up user page
+        		//Successful login
+            	//Check if to be routed to set up user page
         		User u = users.get(res);
         		if(u.infoSetup) {
+        			
+        			//Pass information to home page
         			homePage.u = u;
+
         			homePage.role = loginPage.comboBox.getSelectionModel().getSelectedItem();
-		    		//role selection logic needed as well
-		    		//homepage render function
+        			homePage.setSceneFromRole();
+
+
 		    		primaryStage.setTitle(homePage.title);
             		primaryStage.setScene(homePage.scene);
         		} else {
+        			//Pass information to set up page
         			setUpPage.u=u;
         			setUpPage.role = loginPage.comboBox.getSelectionModel().getSelectedItem();
         			setUpPage.clearFields();
@@ -96,8 +115,11 @@ public class App extends Application {
         	}
         	
         });
+        
+        //Set the OTP button for the login page
         loginPage.otplogin.setOnAction(e ->{
         	
+        	//Confirm valid OTP
         	int res = otpPage.confirm(users,loginPage.otpField.getText());
         	if(res == -1) {
         		//error message
@@ -106,6 +128,7 @@ public class App extends Application {
         		alert.setContentText("Incorrect OTP");
         		alert.showAndWait();
         	} else {
+        		//Pass information to OTP page
         		otpPage.u = users.get(res);
         		otpPage.clearFields();
 	        	primaryStage.setTitle(otpPage.title);
@@ -113,14 +136,18 @@ public class App extends Application {
         	}
         });
         
+        //Set action for submit button on OTP page
         otpPage.btn.setOnAction(e ->{
+        	
+        	//confirm valid set up 
         	String temp = otpPage.updateUserInfo();
         	if (temp.equals("valid")) {
+        		//Route to login page
         		loginPage.clearFields();
         		primaryStage.setTitle(loginPage.title);
             	primaryStage.setScene(loginPage.scene);
         	} else {
-        		//error message
+        		//Error message
         		Alert alert = new Alert(AlertType.ERROR);
         		alert.setHeaderText("Error");
         		alert.setContentText(temp);
@@ -136,6 +163,7 @@ public class App extends Application {
         
     }
     
+    //Find index of user from their username
     public int indexFromUsername(String s) {
     	for(int i=0;i<users.size();i++) {
     		if(users.get(i).username.equals(s)) {
@@ -145,6 +173,7 @@ public class App extends Application {
     	return -1;
     }
     
+    //Check whether the current list of Users contains a certain username
     public static boolean containsUsername(String s) {
     	for(int i=0;i<users.size();i++) {
     		if(users.get(i).username.equals(s)) {

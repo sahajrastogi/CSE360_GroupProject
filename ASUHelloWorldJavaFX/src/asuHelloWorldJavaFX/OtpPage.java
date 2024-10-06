@@ -95,13 +95,23 @@ public class OtpPage {
 		String password = passwordField.getText();
 		String cpassword = cPasswordField.getText();
 
-		//include username and password checks
+		//Username and password checks
 		if(App.containsUsername(username)) {
 			return "Username taken";
 		}
 		
-		//other checks go here
+		if(username.length() < 5) return "Username must be at least 5 characters long";
 		
+		if(!username.matches("[a-zA-Z0-9]+")) return "Username must only contain letters and numbers";
+		
+		if(password.length() < 8) return "Password must be at least 8 characters long";
+		
+		if(!password.matches(".*[A-Z].*")) return "Password must contain at least one uppercase character";
+		
+		if(password.contains(" ")) return "Password may not contain any spaces";
+
+		if(password.matches("[a-zA-Z0-9]+")) return "Password must contain at least one special character";
+
 		if(password.equals(cpassword)) {
 			//User u = users.get(currUserIndex);
 			u.username = username;

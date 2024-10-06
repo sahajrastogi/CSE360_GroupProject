@@ -50,8 +50,6 @@ public class LoginPage {
         
         Label roleLabel = new Label("Select Role:");
         comboBox = new ComboBox<>();
-
-        // Add items to the ComboBox
         comboBox.getItems().addAll("Student","Instructor","Admin");
 
         
@@ -93,12 +91,18 @@ public class LoginPage {
 	}
 
 	public int login(ArrayList<User> users, String username, String password,String role) {
+//		System.out.println(App.containsUsername(username));
+//		System.out.println(username);
 		for(int i = 0; i<users.size();i++) {
+			
 			User u = users.get(i);
 			
+			//confirm valid role
 			if (!((role.equals("Instructor") && u.isInstructor) || (role.equals("Student") && u.isStudent) || (role.equals("Admin") && u.isAdmin))){
 				continue;
 			}
+			
+			//confirm that username and password match
 			if(!u.passwordIsOTP && (new String(u.password)).equals(password) && username.equals(u.username)) {
 				return i;
 			}
