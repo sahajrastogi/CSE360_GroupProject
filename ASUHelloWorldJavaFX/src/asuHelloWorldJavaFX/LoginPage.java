@@ -1,5 +1,6 @@
 package asuHelloWorldJavaFX;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 import javafx.application.Application;
@@ -102,7 +103,11 @@ public class LoginPage {
 			
 			//confirm that username and password match
 			if(u.passwordIsResetOTP && (new String(u.password)).equals(password) && username.equals(u.username)) {
-				return -1*i - 10;
+				if(LocalTime.now().isBefore(u.expireTime)) {
+					return -1*i - 10;
+				} else {
+					return -2;
+				}
 			}
 			if(!u.passwordIsInviteCode && (new String(u.password)).equals(password) && username.equals(u.username)) {
 				return i;

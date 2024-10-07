@@ -1,5 +1,6 @@
 package asuHelloWorldJavaFX;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Random;
@@ -203,6 +204,7 @@ public class HomePage {
 	        	resetField.setText("Code: " + code);
 	        	us.password = code.toCharArray();
 	        	us.passwordIsResetOTP = true;
+	        	us.expireTime = LocalTime.now().plusHours(6);
         	}
         });
         

@@ -51,6 +51,7 @@ public class App extends Application {
     	LoginPage loginPage = new LoginPage();
     	HomePage homePage = new HomePage();
     	InvitePage invitePage = new InvitePage();
+    	PasswordResetPage prPage = new PasswordResetPage();
 
     	
     	//Sets the action of the initialization page to go the login Page        
@@ -116,8 +117,22 @@ public class App extends Application {
             		primaryStage.setScene(setUpPage.scene);
         		}
         	} else {
+        		if(res == -2) {
+        			Alert alert = new Alert(AlertType.ERROR);
+            		alert.setHeaderText("Error");
+            		alert.setContentText("Reset password expired.");
+            		alert.showAndWait();
+
+        		} else {
         		res += 10;res = -res;
+        		User u = users.get(res);
+
         		//send to password reset page
+        		prPage.u=u;
+        		prPage.clearFields();
+    			primaryStage.setTitle(prPage.title);
+        		primaryStage.setScene(prPage.scene);
+        		}
         	}
         	
         });
@@ -160,6 +175,22 @@ public class App extends Application {
         		alert.showAndWait();
         	}
         	
+        });
+        
+        prPage.btn.setOnAction(e -> {
+        	String temp = prPage.updateUserInfo();
+        	if (temp.equals("valid")) {
+        		//Route to login page
+        		loginPage.clearFields();
+        		primaryStage.setTitle(loginPage.title);
+            	primaryStage.setScene(loginPage.scene);
+        	} else {
+        		//Error message
+        		Alert alert = new Alert(AlertType.ERROR);
+        		alert.setHeaderText("Error");
+        		alert.setContentText(temp);
+        		alert.showAndWait();
+        	}
         });
         
     	primaryStage.setTitle("Welcome Page");
