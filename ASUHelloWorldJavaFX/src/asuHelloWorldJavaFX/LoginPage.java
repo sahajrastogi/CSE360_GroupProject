@@ -23,18 +23,18 @@ public class LoginPage {
 
 	public Scene scene;
 	public Button btn;
-	public Button otplogin;
+	public Button inviteLogin;
 	public String title = "Login Page";
 	public String currUser;
 	
 	public TextField userField;
     public PasswordField passwordField;
-    public PasswordField otpField;
+    public PasswordField inviteField;
     public ComboBox<String> comboBox;
 
 	public LoginPage() {
 		btn = new Button("Submit");
-		otplogin = new Button("Create Account");
+		inviteLogin = new Button("Create Account");
 
         
 		Label ret = new Label("For returning users:");
@@ -45,8 +45,8 @@ public class LoginPage {
         Label passwordLabel = new Label("Password:");
         passwordField = new PasswordField();
         
-        Label otpLabel = new Label("OTP:");
-        otpField = new PasswordField();
+        Label inviteLabel = new Label("Invite Code:");
+        inviteField = new PasswordField();
         
         Label roleLabel = new Label("Select Role:");
         comboBox = new ComboBox<>();
@@ -70,9 +70,9 @@ public class LoginPage {
         grid.add(btn, 1, 4);
         
         grid.add(first, 1, 6);
-        grid.add(otpLabel, 0, 7);
-        grid.add(otpField, 1, 7);
-        grid.add(otplogin, 1, 8);
+        grid.add(inviteLabel, 0, 7);
+        grid.add(inviteField, 1, 7);
+        grid.add(inviteLogin, 1, 8);
 
         BorderPane totalPage = new BorderPane();
         totalPage.setCenter(grid);
@@ -87,12 +87,10 @@ public class LoginPage {
 	public void clearFields() {
 		userField.clear();
 		passwordField.clear();
-		otpField.clear();
+		inviteField.clear();
 	}
 
 	public int login(ArrayList<User> users, String username, String password,String role) {
-//		System.out.println(App.containsUsername(username));
-//		System.out.println(username);
 		for(int i = 0; i<users.size();i++) {
 			
 			User u = users.get(i);
@@ -103,7 +101,10 @@ public class LoginPage {
 			}
 			
 			//confirm that username and password match
-			if(!u.passwordIsOTP && (new String(u.password)).equals(password) && username.equals(u.username)) {
+			if(u.passwordIsResetOTP && (new String(u.password)).equals(password) && username.equals(u.username)) {
+				return -1*i - 10;
+			}
+			if(!u.passwordIsInviteCode && (new String(u.password)).equals(password) && username.equals(u.username)) {
 				return i;
 			}
 		}

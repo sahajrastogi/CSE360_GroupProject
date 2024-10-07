@@ -36,6 +36,7 @@ public class SetUserUpPage {
 		btn = new Button("Submit");
         
         
+		Label info = new Label("Set up your account:");
         Label fNameLabel = new Label("First Name:");
         fNameField = new TextField();
         
@@ -57,6 +58,7 @@ public class SetUserUpPage {
         grid.setVgap(10);
         grid.setHgap(10);
 
+        grid.add(info, 0, 0);
         grid.add(fNameLabel, 0, 1);
         grid.add(fNameField, 1, 1);
         grid.add(mNameLabel, 0, 2);
@@ -98,8 +100,6 @@ public class SetUserUpPage {
 		}
 		
 		u.infoSetup = true;
-
-
 	}
 
    

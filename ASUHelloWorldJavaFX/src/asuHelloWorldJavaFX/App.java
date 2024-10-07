@@ -31,13 +31,16 @@ public class App extends Application {
     	users.add(first);
     	
     	
-    	User convenience = new User();
-    	convenience.password = "a".toCharArray();
-    	convenience.username = "a";
-    	convenience.isAdmin = true;
-    	convenience.infoSetup = true;
-    	convenience.passwordIsOTP = false;
-    	users.add(convenience);
+    	
+    	for(int i=0;i<100;i++) {
+	    	User convenience = new User();
+	    	convenience.password = "a".toCharArray();
+	    	convenience.username = ("a" + i);
+	    	convenience.isAdmin = true;
+	    	convenience.infoSetup = true;
+	    	convenience.passwordIsInviteCode = false;
+	    	users.add(convenience);
+    	}
     	
     	System.out.println("ASU Hello World!");
     	System.out.println("It started!");
@@ -47,7 +50,7 @@ public class App extends Application {
     	SetUserUpPage setUpPage = new SetUserUpPage();
     	LoginPage loginPage = new LoginPage();
     	HomePage homePage = new HomePage();
-    	OtpPage otpPage = new OtpPage();
+    	InvitePage invitePage = new InvitePage();
 
     	
     	//Sets the action of the initialization page to go the login Page        
@@ -89,7 +92,7 @@ public class App extends Application {
         		alert.setContentText("Invalid username, password or role selection");
         		alert.showAndWait();
 
-        	} else {
+        	} else if(res > 0){
         		//Successful login
             	//Check if to be routed to set up user page
         		User u = users.get(res);
@@ -112,35 +115,38 @@ public class App extends Application {
         			primaryStage.setTitle(setUpPage.title);
             		primaryStage.setScene(setUpPage.scene);
         		}
+        	} else {
+        		res += 10;res = -res;
+        		//send to password reset page
         	}
         	
         });
         
-        //Set the OTP button for the login page
-        loginPage.otplogin.setOnAction(e ->{
+        //Set the invite button for the login page
+        loginPage.inviteLogin.setOnAction(e ->{
         	
-        	//Confirm valid OTP
-        	int res = otpPage.confirm(users,loginPage.otpField.getText());
+        	//Confirm valid invite code
+        	int res = invitePage.confirm(users,loginPage.inviteField.getText());
         	if(res == -1) {
         		//error message
         		Alert alert = new Alert(AlertType.ERROR);
         		alert.setHeaderText("Error");
-        		alert.setContentText("Incorrect OTP");
+        		alert.setContentText("Incorrect invite code");
         		alert.showAndWait();
         	} else {
-        		//Pass information to OTP page
-        		otpPage.u = users.get(res);
-        		otpPage.clearFields();
-	        	primaryStage.setTitle(otpPage.title);
-	        	primaryStage.setScene(otpPage.scene);
+        		//Pass information to Invite page
+        		invitePage.u = users.get(res);
+        		invitePage.clearFields();
+	        	primaryStage.setTitle(invitePage.title);
+	        	primaryStage.setScene(invitePage.scene);
         	}
         });
         
-        //Set action for submit button on OTP page
-        otpPage.btn.setOnAction(e ->{
+        //Set action for submit button on Invite page
+        invitePage.btn.setOnAction(e ->{
         	
         	//confirm valid set up 
-        	String temp = otpPage.updateUserInfo();
+        	String temp = invitePage.updateUserInfo();
         	if (temp.equals("valid")) {
         		//Route to login page
         		loginPage.clearFields();
@@ -164,7 +170,7 @@ public class App extends Application {
     }
     
     //Find index of user from their username
-    public int indexFromUsername(String s) {
+    public static int indexFromUsername(String s) {
     	for(int i=0;i<users.size();i++) {
     		if(users.get(i).username.equals(s)) {
     			return i;

@@ -1,8 +1,12 @@
 package asuHelloWorldJavaFX;
 
+import java.util.ArrayList;
+import java.util.Optional;
 import java.util.Random;
 
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
@@ -11,13 +15,18 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class HomePage {
@@ -66,64 +75,190 @@ public class HomePage {
         grid.setVgap(10);
         grid.setHgap(10);
         Label intro = new Label("Your name is " + u.preferredName + " and you are a " + role);
+        
+        
+        ObservableList<String> items = FXCollections.observableArrayList();
 
         
-        Label otpGenerate = new Label("Generate a one-time code for a new user:");
+        // Creating a ListView
+        for(User u : App.users) {
+        	if(!u.passwordIsInviteCode) {
+        		items.add(u.username);
+        	}
+        }
+        ListView<String> userList = new ListView<>(items);
         
-        Label roleLabel = new Label("Select Role:");
-        Label otpLabel = new Label("");
+       
+        Label inviteGenerate = new Label("Generate an invite code for a new user:");
+        Label roleLabel = new Label("Select Role(s) for the new user:");
+        Label userListLabel = new Label("User List:");
+        Label inviteLabel = new Label("");
 
-        ComboBox comboBox = new ComboBox<>();
-		Button btn = new Button("Submit");
-        comboBox.getItems().addAll("Student","Instructor","Admin");
+        
+		Button btn = new Button("Generate");
         
         
-        grid.add(otpGenerate, 0, 0);
-        grid.add(otpLabel, 1, 0);
+		CheckBox checkStudent = new CheckBox("Student");
+        CheckBox checkInstructor = new CheckBox("Instructor");
+        CheckBox checkAdmin = new CheckBox("Admin");
+
+        
+        Button del = new Button("Delete User");
+        Button reset = new Button("Reset User");
+        Label resetField = new Label("Code:");
+        CheckBox updStudent = new CheckBox("Student");
+        CheckBox updInstructor = new CheckBox("Instructor");
+        CheckBox updAdmin = new CheckBox("Admin");
+        Button update = new Button("Update User Roles");
+
+        
+        VBox reswrap = new VBox();
+        reswrap.setSpacing(5);
+        reswrap.getChildren().addAll(reset,resetField);
+
+        VBox upd = new VBox();
+        upd.setSpacing(5);
+        upd.getChildren().addAll(updStudent,updInstructor,updAdmin);
+        
+        VBox vbox = new VBox();
+        vbox.setSpacing(5);
+        vbox.getChildren().addAll(checkStudent, checkInstructor,checkAdmin);
+        
+        VBox editUser = new VBox();
+        editUser.setSpacing(40);
+        editUser.getChildren().addAll(del,reswrap,upd, update);
+        
+        
+        
+        userList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+        	int x = App.indexFromUsername(newValue);
+        	if(x != -1) {
+        		User us = App.users.get(x);
+        		updStudent.setSelected(us.isStudent);
+        		updAdmin.setSelected(us.isAdmin);
+        		updInstructor.setSelected(us.isInstructor);
+        	}
+        });
+        
+        
+       del.setOnAction(e->{
+    	   if(userList.getSelectionModel().getSelectedItem() == null) {
+       		Alert alert = new Alert(AlertType.ERROR);
+       		alert.setHeaderText("Error");
+       		alert.setContentText("Select a user first.");
+       		alert.showAndWait();
+	       	} else { 
+	       		
+	       		Alert alert = new Alert(AlertType.CONFIRMATION);
+	            alert.setTitle("Confirmation Dialog");
+	            alert.setHeaderText("Are you sure?");
+	            alert.setContentText("Do you want to delete this user's account?");
+	            Optional<ButtonType> result = alert.showAndWait();
+	            boolean res = result.isPresent() && result.get() == ButtonType.OK;
+	            
+	            if(res) {
+	        		int x = App.indexFromUsername(userList.getSelectionModel().getSelectedItem());
+	        		App.users.remove(x);
+	        		items.remove(userList.getSelectionModel().getSelectedItem());
+	            }
+	       	}
+       });
+        
+        
+        update.setOnAction(e ->{
+        	if(userList.getSelectionModel().getSelectedItem() == null) {
+        		Alert alert = new Alert(AlertType.ERROR);
+        		alert.setHeaderText("Error");
+        		alert.setContentText("Select a user first.");
+        		alert.showAndWait();
+        	} else {        	
+        		int x = App.indexFromUsername(userList.getSelectionModel().getSelectedItem());
+        		User us = App.users.get(x);
+        		us.isAdmin = updAdmin.isSelected();
+        		us.isStudent = updStudent.isSelected();
+        		us.isInstructor = updInstructor.isSelected();
+        	}
+        	
+        });
+        
+        
+        reset.setOnAction(e ->{
+        	if(userList.getSelectionModel().getSelectedItem() == null) {
+        		Alert alert = new Alert(AlertType.ERROR);
+        		alert.setHeaderText("Error");
+        		alert.setContentText("Select a user first.");
+        		alert.showAndWait();
+        	} else {        	
+        		int x = App.indexFromUsername(userList.getSelectionModel().getSelectedItem());
+        		User us = App.users.get(x);
+        		us.passwordIsResetOTP = true;
+        		
+        		Random random = new Random();
+	        	String code = "";
+	        	String chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+	        	for(int i=0;i<10;i++) {
+	        		int tx = random.nextInt(chars.length());
+	        		code += (chars.charAt(tx));
+	        	}
+	        	resetField.setText("Code: " + code);
+	        	us.password = code.toCharArray();
+	        	us.passwordIsResetOTP = true;
+        	}
+        });
+        
+
+        grid.add(inviteGenerate, 0, 0);
+        grid.add(inviteLabel, 1, 0);
 
         grid.add(roleLabel,0,1);
         GridPane.setHalignment(roleLabel,HPos.RIGHT);
 
-        grid.add(comboBox,1,1);
+        grid.add(vbox,1,1);
+        
         grid.add(btn,1,2);
         
+        grid.add(userListLabel, 0, 8);
+        GridPane.setHalignment(userListLabel, HPos.RIGHT);
+
+        grid.add(userList, 1, 8);
+        grid.add(editUser, 2, 8);
+
+
+        	
         btn.setOnAction(e ->{
         	
         	//check roleLabel selected
-        	if(comboBox.getValue() == null) {
+        	if(!checkStudent.isSelected() && !checkAdmin.isSelected() && !checkInstructor.isSelected()) {
         		//Error message
         		Alert alert = new Alert(AlertType.ERROR);
         		alert.setHeaderText("Error");
         		alert.setContentText("Select a role for the user.");
         		alert.showAndWait();
         	} else {
-	        	//generate OTP randomly
+	        	//generate invite code randomly
 	        	Random random = new Random();
-	        	String otp = "";
+	        	String code = "";
 	        	String chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 	        	for(int i=0;i<10;i++) {
 	        		int x = random.nextInt(chars.length());
-	        		otp += (chars.charAt(x));
+	        		code += (chars.charAt(x));
 	        	}
-	        	otpLabel.setText(otp);
+	        	inviteLabel.setText(code);
 	        	//add to Users array
 	        	User next = new User();
-	        	next.password = otp.toCharArray();
-	        	next.passwordIsOTP = true;
+	        	next.password = code.toCharArray();
+	        	next.passwordIsInviteCode = true;
 	        	next.infoSetup = false;
-	        	if(comboBox.getValue().equals("Admin")) {
-	        		next.isAdmin = true;
-	        	} else if (comboBox.getValue().equals("Student")){
-	        		next.isStudent = true;
-	        	} else if(comboBox.getValue().equals("Instructor")) {
-	        		next.isInstructor = true;
-	        	}
+	        	next.isStudent = checkStudent.isSelected();
+	        	next.isAdmin = checkAdmin.isSelected();
+	        	next.isInstructor = checkInstructor.isSelected();
+
 	        	App.users.add(next);	        	
         	}
         });
 
 
-        grid.add(logout,0,10);
+        grid.add(logout,0,20);
         
         BorderPane totalPage = new BorderPane();
         totalPage.setCenter(grid);

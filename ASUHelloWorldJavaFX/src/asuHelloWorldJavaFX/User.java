@@ -4,7 +4,8 @@ public class User {
 	public boolean isAdmin = false;
 	public boolean isStudent = false;
 	public boolean isInstructor = false;
-	public boolean passwordIsOTP;
+	public boolean passwordIsInviteCode;
+	public boolean passwordIsResetOTP;
 	public boolean infoSetup;
 	public String email = "";
 	public String username = "";
@@ -16,8 +17,9 @@ public class User {
 	public String preferredName = "";
 
 	public User() {
-		passwordIsOTP = true;
+		passwordIsInviteCode = true;
 		infoSetup = false;
+		passwordIsResetOTP = false;
 	}
 	
 	

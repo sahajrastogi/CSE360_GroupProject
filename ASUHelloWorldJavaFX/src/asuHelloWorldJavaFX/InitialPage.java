@@ -22,7 +22,7 @@ public class InitialPage {
     public TextField textField;
 
 	public InitialPage() {
-        Label intro = new Label("Your OTP is \"first\"");
+        Label intro = new Label("Your invite code is \"first\"");
         //intro.setFont(new Font("Arial", 20));
 
 		btn = new Button("Get Started Here");

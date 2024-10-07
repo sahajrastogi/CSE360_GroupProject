@@ -18,12 +18,12 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-public class OtpPage {
+public class InvitePage {
 
 	public Scene scene;
 	public Button btn;
 	public String currUser;
-	public String title = "OTP Page";
+	public String title = "Invite Page";
 	
 	//public int currUserIndex;
 	public User u;
@@ -32,7 +32,7 @@ public class OtpPage {
     public PasswordField passwordField;
     public PasswordField cPasswordField;
     
-	public OtpPage() {
+	public InvitePage() {
 		btn = new Button("Create Account");
         
         
@@ -75,12 +75,12 @@ public class OtpPage {
 		currUser = s;
 	} 
 	
-	public int confirm(ArrayList<User> users, String otp) {
+	public int confirm(ArrayList<User> users, String invite) {
 		for(int i = 0; i<users.size();i++) {
 			User us = users.get(i);
 			
 			//need to check expire time here
-			if(us.passwordIsOTP && (new String(us.password)).equals(otp)) {
+			if(us.passwordIsInviteCode && (new String(us.password)).equals(invite)) {
 				return i;
 			}
 		}
@@ -116,7 +116,7 @@ public class OtpPage {
 			//User u = users.get(currUserIndex);
 			u.username = username;
 			u.password = password.toCharArray();
-			u.passwordIsOTP = false;
+			u.passwordIsInviteCode = false;
 			return "valid";
 		}
 		return "Password and confirmation don't match";
