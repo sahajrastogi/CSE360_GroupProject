@@ -25,7 +25,7 @@ public class InitialPage {
         Label intro = new Label("Your invite code is \"first\"");
         //intro.setFont(new Font("Arial", 20));
 
-		btn = new Button("Get Started Here");
+        btn = new Button("Get Started Here");
 		
 		GridPane grid = new GridPane();
 		grid.setPadding(new Insets(10, 10, 10, 10));

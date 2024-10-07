@@ -149,19 +149,26 @@ public class HomePage {
        		alert.setContentText("Select a user first.");
        		alert.showAndWait();
 	       	} else { 
+	       		if(userList.getSelectionModel().getSelectedItem().equals(u.username)) {
+	       			Alert alert = new Alert(AlertType.ERROR);
+	           		alert.setHeaderText("Error");
+	           		alert.setContentText("You can't delete yourself");
+	           		alert.showAndWait();
+	       		} else {	       		
 	       		
-	       		Alert alert = new Alert(AlertType.CONFIRMATION);
-	            alert.setTitle("Confirmation Dialog");
-	            alert.setHeaderText("Are you sure?");
-	            alert.setContentText("Do you want to delete this user's account?");
-	            Optional<ButtonType> result = alert.showAndWait();
-	            boolean res = result.isPresent() && result.get() == ButtonType.OK;
-	            
-	            if(res) {
-	        		int x = App.indexFromUsername(userList.getSelectionModel().getSelectedItem());
-	        		App.users.remove(x);
-	        		items.remove(userList.getSelectionModel().getSelectedItem());
-	            }
+		       		Alert alert = new Alert(AlertType.CONFIRMATION);
+		            alert.setTitle("Confirmation Dialog");
+		            alert.setHeaderText("Are you sure?");
+		            alert.setContentText("Do you want to delete this user's account?");
+		            Optional<ButtonType> result = alert.showAndWait();
+		            boolean res = result.isPresent() && result.get() == ButtonType.OK;
+		            
+		            if(res) {
+		        		int x = App.indexFromUsername(userList.getSelectionModel().getSelectedItem());
+		        		App.users.remove(x);
+		        		items.remove(userList.getSelectionModel().getSelectedItem());
+		            }
+	       		}
 	       	}
        });
         

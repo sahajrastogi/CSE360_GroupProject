@@ -119,6 +119,5 @@ public class LoginPage {
 		
 		}
 		return -1;
-
 	}
 }

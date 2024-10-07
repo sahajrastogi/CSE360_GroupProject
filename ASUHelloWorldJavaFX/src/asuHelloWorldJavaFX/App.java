@@ -18,9 +18,10 @@ public class App extends Application {
 	public static final int HEIGHT = 700;
 	
 	public static ArrayList<User> users;
-    public static void main(String[] args) {
-        launch(args);
-    }
+    
+	public static void main(String[] args) {
+	    launch(args);
+	}
     
     public void start(Stage primaryStage) {
     	
@@ -32,6 +33,7 @@ public class App extends Application {
     	
     	
     	
+    	//There are 100 dummy admin users with username a followed by a number and password a
     	for(int i=0;i<100;i++) {
 	    	User convenience = new User();
 	    	convenience.password = "a".toCharArray();
@@ -56,6 +58,7 @@ public class App extends Application {
     	
     	//Sets the action of the initialization page to go the login Page        
         initPage.btn.setOnAction(e -> {
+        	System.out.println("Going to LoginPage");
         	loginPage.clearFields();
         	primaryStage.setTitle(loginPage.title);
         	primaryStage.setScene(loginPage.scene);
@@ -65,6 +68,8 @@ public class App extends Application {
         //Sets the transition for the set up page to the home page and passes along user information
         setUpPage.btn.setOnAction(e -> {
         	//need to do alerts if invalid name or password
+        	System.out.println("Going to HomePage");
+
         	setUpPage.updateUserInfo();
         	homePage.u = setUpPage.u;
 			homePage.role = setUpPage.role;
@@ -75,6 +80,7 @@ public class App extends Application {
 
         //sets transition for the home page
         homePage.logout.setOnAction(e ->{
+        	System.out.println("Going to LoginPage");
         	loginPage.clearFields();
         	primaryStage.setTitle(loginPage.title);
         	primaryStage.setScene(loginPage.scene);
@@ -93,13 +99,15 @@ public class App extends Application {
         		alert.setContentText("Invalid username, password or role selection");
         		alert.showAndWait();
 
-        	} else if(res > 0){
+        	} else if(res >= 0){
         		//Successful login
             	//Check if to be routed to set up user page
         		User u = users.get(res);
         		if(u.infoSetup) {
         			
         			//Pass information to home page
+                	System.out.println("Going to HomePage - passing user information along");
+
         			homePage.u = u;
 
         			homePage.role = loginPage.comboBox.getSelectionModel().getSelectedItem();
@@ -110,6 +118,8 @@ public class App extends Application {
             		primaryStage.setScene(homePage.scene);
         		} else {
         			//Pass information to set up page
+                	System.out.println("Going to SetUserUpPage - passing user information along");
+
         			setUpPage.u=u;
         			setUpPage.role = loginPage.comboBox.getSelectionModel().getSelectedItem();
         			setUpPage.clearFields();
@@ -124,10 +134,13 @@ public class App extends Application {
             		alert.showAndWait();
 
         		} else {
-        		res += 10;res = -res;
+        		res += 10;
+        		res = -res;
         		User u = users.get(res);
 
         		//send to password reset page
+            	System.out.println("Going to PasswordResetPage - passing user information along");
+
         		prPage.u=u;
         		prPage.clearFields();
     			primaryStage.setTitle(prPage.title);
@@ -150,6 +163,8 @@ public class App extends Application {
         		alert.showAndWait();
         	} else {
         		//Pass information to Invite page
+            	System.out.println("Going to Invite Page - passing user information along");
+
         		invitePage.u = users.get(res);
         		invitePage.clearFields();
 	        	primaryStage.setTitle(invitePage.title);
@@ -164,6 +179,8 @@ public class App extends Application {
         	String temp = invitePage.updateUserInfo();
         	if (temp.equals("valid")) {
         		//Route to login page
+            	System.out.println("Going to LoginPage");
+
         		loginPage.clearFields();
         		primaryStage.setTitle(loginPage.title);
             	primaryStage.setScene(loginPage.scene);
@@ -177,10 +194,12 @@ public class App extends Application {
         	
         });
         
+        
         prPage.btn.setOnAction(e -> {
         	String temp = prPage.updateUserInfo();
         	if (temp.equals("valid")) {
         		//Route to login page
+            	System.out.println("Going to LoginPage");
         		loginPage.clearFields();
         		primaryStage.setTitle(loginPage.title);
             	primaryStage.setScene(loginPage.scene);
