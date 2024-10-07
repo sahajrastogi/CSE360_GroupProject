@@ -35,271 +35,252 @@ public class HomePage {
 	public Button btn;
 	public Button logout;
 
-    public String role;
-    public User u;
-    public String title = "Home Page";
+	public String role;
+	public User u;
+	public String title = "Home Page";
 
 	public HomePage() {
-		
+
 		logout = new Button("Logout");
 
 		GridPane grid = new GridPane();
 		grid.setPadding(new Insets(10, 10, 10, 10));
-        
-        grid.setVgap(10);
-        grid.setHgap(10);
 
-        grid.add(logout,0,1);
+		grid.setVgap(10);
+		grid.setHgap(10);
 
-        scene = new Scene(grid, App.WIDTH, App.HEIGHT);
+		grid.add(logout, 0, 1);
+
+		scene = new Scene(grid, App.WIDTH, App.HEIGHT);
 	}
-	
-	//Set scenes differently based on the role they logged in with
-	public void setSceneFromRole(){
-		if(role == "Student") {
+
+	// Set scenes differently based on the role they logged in with
+	public void setSceneFromRole() {
+		if (role == "Student") {
 			setStudentScene();
 		} else if (role.equals("Admin")) {
 			setAdminScene();
-		} else if(role.equals("Instructor")) {
+		} else if (role.equals("Instructor")) {
 			setInstructorScene();
 		}
 	}
-	
-	
+
 	public void setAdminScene() {
 
-		
 		GridPane grid = new GridPane();
 		grid.setPadding(new Insets(10, 10, 10, 10));
-        
-        grid.setVgap(10);
-        grid.setHgap(10);
-        Label intro = new Label("Your name is " + u.preferredName + " and you are a " + role);
-        
-        
-        ObservableList<String> items = FXCollections.observableArrayList();
 
-        
-        // Creating a ListView
-        for(User u : App.users) {
-        	if(!u.passwordIsInviteCode) {
-        		items.add(u.username);
-        	}
-        }
-        ListView<String> userList = new ListView<>(items);
-        
-       
-        Label inviteGenerate = new Label("Generate an invite code for a new user:");
-        Label roleLabel = new Label("Select Role(s) for the new user:");
-        Label userListLabel = new Label("User List:");
-        Label inviteLabel = new Label("");
+		grid.setVgap(10);
+		grid.setHgap(10);
+		Label intro = new Label("Your name is " + u.preferredName + " and you are a " + role);
 
-        
+		ObservableList<String> items = FXCollections.observableArrayList();
+
+		// Creating a ListView
+		for (User u : App.users) {
+			if (!u.passwordIsInviteCode) {
+				items.add(u.username);
+			}
+		}
+		ListView<String> userList = new ListView<>(items);
+
+		Label inviteGenerate = new Label("Generate an invite code for a new user:");
+		Label roleLabel = new Label("Select Role(s) for the new user:");
+		Label userListLabel = new Label("User List:");
+		Label inviteLabel = new Label("");
+
 		Button btn = new Button("Generate");
-        
-        
+
 		CheckBox checkStudent = new CheckBox("Student");
-        CheckBox checkInstructor = new CheckBox("Instructor");
-        CheckBox checkAdmin = new CheckBox("Admin");
+		CheckBox checkInstructor = new CheckBox("Instructor");
+		CheckBox checkAdmin = new CheckBox("Admin");
 
-        
-        Button del = new Button("Delete User");
-        Button reset = new Button("Reset User");
-        Label resetField = new Label("Code:");
-        CheckBox updStudent = new CheckBox("Student");
-        CheckBox updInstructor = new CheckBox("Instructor");
-        CheckBox updAdmin = new CheckBox("Admin");
-        Button update = new Button("Update User Roles");
+		Button del = new Button("Delete User");
+		Button reset = new Button("Reset User");
+		Label resetField = new Label("Code:");
+		CheckBox updStudent = new CheckBox("Student");
+		CheckBox updInstructor = new CheckBox("Instructor");
+		CheckBox updAdmin = new CheckBox("Admin");
+		Button update = new Button("Update User Roles");
 
-        
-        VBox reswrap = new VBox();
-        reswrap.setSpacing(5);
-        reswrap.getChildren().addAll(reset,resetField);
+		VBox reswrap = new VBox();
+		reswrap.setSpacing(5);
+		reswrap.getChildren().addAll(reset, resetField);
 
-        VBox upd = new VBox();
-        upd.setSpacing(5);
-        upd.getChildren().addAll(updStudent,updInstructor,updAdmin);
-        
-        VBox vbox = new VBox();
-        vbox.setSpacing(5);
-        vbox.getChildren().addAll(checkStudent, checkInstructor,checkAdmin);
-        
-        VBox editUser = new VBox();
-        editUser.setSpacing(40);
-        editUser.getChildren().addAll(del,reswrap,upd, update);
-        
-        
-        
-        userList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-        	int x = App.indexFromUsername(newValue);
-        	if(x != -1) {
-        		User us = App.users.get(x);
-        		updStudent.setSelected(us.isStudent);
-        		updAdmin.setSelected(us.isAdmin);
-        		updInstructor.setSelected(us.isInstructor);
-        	}
-        });
-        
-        
-       del.setOnAction(e->{
-    	   if(userList.getSelectionModel().getSelectedItem() == null) {
-       		Alert alert = new Alert(AlertType.ERROR);
-       		alert.setHeaderText("Error");
-       		alert.setContentText("Select a user first.");
-       		alert.showAndWait();
-	       	} else { 
-	       		
-	       		Alert alert = new Alert(AlertType.CONFIRMATION);
-	            alert.setTitle("Confirmation Dialog");
-	            alert.setHeaderText("Are you sure?");
-	            alert.setContentText("Do you want to delete this user's account?");
-	            Optional<ButtonType> result = alert.showAndWait();
-	            boolean res = result.isPresent() && result.get() == ButtonType.OK;
-	            
-	            if(res) {
-	        		int x = App.indexFromUsername(userList.getSelectionModel().getSelectedItem());
-	        		App.users.remove(x);
-	        		items.remove(userList.getSelectionModel().getSelectedItem());
-	            }
-	       	}
-       });
-        
-        
-        update.setOnAction(e ->{
-        	if(userList.getSelectionModel().getSelectedItem() == null) {
-        		Alert alert = new Alert(AlertType.ERROR);
-        		alert.setHeaderText("Error");
-        		alert.setContentText("Select a user first.");
-        		alert.showAndWait();
-        	} else {        	
-        		int x = App.indexFromUsername(userList.getSelectionModel().getSelectedItem());
-        		User us = App.users.get(x);
-        		us.isAdmin = updAdmin.isSelected();
-        		us.isStudent = updStudent.isSelected();
-        		us.isInstructor = updInstructor.isSelected();
-        	}
-        	
-        });
-        
-        
-        reset.setOnAction(e ->{
-        	if(userList.getSelectionModel().getSelectedItem() == null) {
-        		Alert alert = new Alert(AlertType.ERROR);
-        		alert.setHeaderText("Error");
-        		alert.setContentText("Select a user first.");
-        		alert.showAndWait();
-        	} else {        	
-        		int x = App.indexFromUsername(userList.getSelectionModel().getSelectedItem());
-        		User us = App.users.get(x);
-        		us.passwordIsResetOTP = true;
-        		
-        		Random random = new Random();
-	        	String code = "";
-	        	String chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-	        	for(int i=0;i<10;i++) {
-	        		int tx = random.nextInt(chars.length());
-	        		code += (chars.charAt(tx));
-	        	}
-	        	resetField.setText("Code: " + code);
-	        	us.password = code.toCharArray();
-	        	us.passwordIsResetOTP = true;
-        	}
-        });
-        
+		VBox upd = new VBox();
+		upd.setSpacing(5);
+		upd.getChildren().addAll(updStudent, updInstructor, updAdmin);
 
-        grid.add(inviteGenerate, 0, 0);
-        grid.add(inviteLabel, 1, 0);
+		VBox vbox = new VBox();
+		vbox.setSpacing(5);
+		vbox.getChildren().addAll(checkStudent, checkInstructor, checkAdmin);
 
-        grid.add(roleLabel,0,1);
-        GridPane.setHalignment(roleLabel,HPos.RIGHT);
+		VBox editUser = new VBox();
+		editUser.setSpacing(40);
+		editUser.getChildren().addAll(del, reswrap, upd, update);
 
-        grid.add(vbox,1,1);
-        
-        grid.add(btn,1,2);
-        
-        grid.add(userListLabel, 0, 8);
-        GridPane.setHalignment(userListLabel, HPos.RIGHT);
+		userList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+			int x = App.indexFromUsername(newValue);
+			if (x != -1) {
+				User us = App.users.get(x);
+				updStudent.setSelected(us.isStudent);
+				updAdmin.setSelected(us.isAdmin);
+				updInstructor.setSelected(us.isInstructor);
+			}
+		});
 
-        grid.add(userList, 1, 8);
-        grid.add(editUser, 2, 8);
+		del.setOnAction(e -> {
+			if (userList.getSelectionModel().getSelectedItem() == null) {
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setHeaderText("Error");
+				alert.setContentText("Select a user first.");
+				alert.showAndWait();
+			} else {
 
+				Alert alert = new Alert(AlertType.CONFIRMATION);
+				alert.setTitle("Confirmation Dialog");
+				alert.setHeaderText("Are you sure?");
+				alert.setContentText("Do you want to delete this user's account?");
+				Optional<ButtonType> result = alert.showAndWait();
+				boolean res = result.isPresent() && result.get() == ButtonType.OK;
 
-        	
-        btn.setOnAction(e ->{
-        	
-        	//check roleLabel selected
-        	if(!checkStudent.isSelected() && !checkAdmin.isSelected() && !checkInstructor.isSelected()) {
-        		//Error message
-        		Alert alert = new Alert(AlertType.ERROR);
-        		alert.setHeaderText("Error");
-        		alert.setContentText("Select a role for the user.");
-        		alert.showAndWait();
-        	} else {
-	        	//generate invite code randomly
-	        	Random random = new Random();
-	        	String code = "";
-	        	String chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-	        	for(int i=0;i<10;i++) {
-	        		int x = random.nextInt(chars.length());
-	        		code += (chars.charAt(x));
-	        	}
-	        	inviteLabel.setText(code);
-	        	//add to Users array
-	        	User next = new User();
-	        	next.password = code.toCharArray();
-	        	next.passwordIsInviteCode = true;
-	        	next.infoSetup = false;
-	        	next.isStudent = checkStudent.isSelected();
-	        	next.isAdmin = checkAdmin.isSelected();
-	        	next.isInstructor = checkInstructor.isSelected();
+				if (res) {
+					int x = App.indexFromUsername(userList.getSelectionModel().getSelectedItem());
+					App.users.remove(x);
+					items.remove(userList.getSelectionModel().getSelectedItem());
+				}
+			}
+		});
 
-	        	App.users.add(next);	        	
-        	}
-        });
+		update.setOnAction(e -> {
+			if (userList.getSelectionModel().getSelectedItem() == null) {
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setHeaderText("Error");
+				alert.setContentText("Select a user first.");
+				alert.showAndWait();
+			} else {
+				int x = App.indexFromUsername(userList.getSelectionModel().getSelectedItem());
+				User us = App.users.get(x);
+				us.isAdmin = updAdmin.isSelected();
+				us.isStudent = updStudent.isSelected();
+				us.isInstructor = updInstructor.isSelected();
+			}
 
+		});
 
-        grid.add(logout,0,20);
-        
-        BorderPane totalPage = new BorderPane();
-        totalPage.setCenter(grid);
-        grid.setAlignment(Pos.CENTER);
-        scene = new Scene(totalPage, App.WIDTH, App.HEIGHT);
+		reset.setOnAction(e -> {
+			if (userList.getSelectionModel().getSelectedItem() == null) {
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setHeaderText("Error");
+				alert.setContentText("Select a user first.");
+				alert.showAndWait();
+			} else {
+				int x = App.indexFromUsername(userList.getSelectionModel().getSelectedItem());
+				User us = App.users.get(x);
+				us.passwordIsResetOTP = true;
+
+				Random random = new Random();
+				String code = "";
+				String chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+				for (int i = 0; i < 10; i++) {
+					int tx = random.nextInt(chars.length());
+					code += (chars.charAt(tx));
+				}
+				resetField.setText("Code: " + code);
+				us.password = code.toCharArray();
+				us.passwordIsResetOTP = true;
+			}
+		});
+
+		grid.add(inviteGenerate, 0, 0);
+		grid.add(inviteLabel, 1, 0);
+
+		grid.add(roleLabel, 0, 1);
+		GridPane.setHalignment(roleLabel, HPos.RIGHT);
+
+		grid.add(vbox, 1, 1);
+
+		grid.add(btn, 1, 2);
+
+		grid.add(userListLabel, 0, 8);
+		GridPane.setHalignment(userListLabel, HPos.RIGHT);
+
+		grid.add(userList, 1, 8);
+		grid.add(editUser, 2, 8);
+
+		btn.setOnAction(e -> {
+
+			// check roleLabel selected
+			if (!checkStudent.isSelected() && !checkAdmin.isSelected() && !checkInstructor.isSelected()) {
+				// Error message
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setHeaderText("Error");
+				alert.setContentText("Select a role for the user.");
+				alert.showAndWait();
+			} else {
+				// generate invite code randomly
+				Random random = new Random();
+				String code = "";
+				String chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+				for (int i = 0; i < 10; i++) {
+					int x = random.nextInt(chars.length());
+					code += (chars.charAt(x));
+				}
+				inviteLabel.setText(code);
+				// add to Users array
+				User next = new User();
+				next.password = code.toCharArray();
+				next.passwordIsInviteCode = true;
+				next.infoSetup = false;
+				next.isStudent = checkStudent.isSelected();
+				next.isAdmin = checkAdmin.isSelected();
+				next.isInstructor = checkInstructor.isSelected();
+
+				App.users.add(next);
+			}
+		});
+
+		grid.add(logout, 0, 20);
+
+		BorderPane totalPage = new BorderPane();
+		totalPage.setCenter(grid);
+		grid.setAlignment(Pos.CENTER);
+		scene = new Scene(totalPage, App.WIDTH, App.HEIGHT);
 	}
-	
+
 	public void setStudentScene() {
 
 		GridPane grid = new GridPane();
 		grid.setPadding(new Insets(10, 10, 10, 10));
-        
-        grid.setVgap(10);
-        grid.setHgap(10);
-        Label intro = new Label("Your name is " + u.preferredName + " and you are a " + role);
 
-        grid.add(intro,0,0);
-        grid.add(logout,0,1);
-        
-        BorderPane totalPage = new BorderPane();
-        totalPage.setCenter(grid);
-        grid.setAlignment(Pos.CENTER);
-        scene = new Scene(totalPage, App.WIDTH, App.HEIGHT);
+		grid.setVgap(10);
+		grid.setHgap(10);
+		Label intro = new Label("Your name is " + u.preferredName + " and you are a " + role);
+
+		grid.add(intro, 0, 0);
+		grid.add(logout, 0, 1);
+
+		BorderPane totalPage = new BorderPane();
+		totalPage.setCenter(grid);
+		grid.setAlignment(Pos.CENTER);
+		scene = new Scene(totalPage, App.WIDTH, App.HEIGHT);
 	}
-	
+
 	public void setInstructorScene() {
 
 		GridPane grid = new GridPane();
 		grid.setPadding(new Insets(10, 10, 10, 10));
-        
-        grid.setVgap(10);
-        grid.setHgap(10);
-        Label intro = new Label("Your name is " + u.preferredName + " and you are a " + role);
 
-        grid.add(intro,0,0);
-        grid.add(logout,0,1);
-        
-        BorderPane totalPage = new BorderPane();
-        totalPage.setCenter(grid);
-        grid.setAlignment(Pos.CENTER);
-        scene = new Scene(totalPage, App.WIDTH, App.HEIGHT);
+		grid.setVgap(10);
+		grid.setHgap(10);
+		Label intro = new Label("Your name is " + u.preferredName + " and you are a " + role);
+
+		grid.add(intro, 0, 0);
+		grid.add(logout, 0, 1);
+
+		BorderPane totalPage = new BorderPane();
+		totalPage.setCenter(grid);
+		grid.setAlignment(Pos.CENTER);
+		scene = new Scene(totalPage, App.WIDTH, App.HEIGHT);
 	}
 }
-

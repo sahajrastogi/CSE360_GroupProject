@@ -22,62 +22,59 @@ public class SetUserUpPage {
 	public Button btn;
 	public User u;
 	public String role;
-	
-    public TextField fNameField;
-    public TextField mNameField;
-    public TextField lNameField;
-    public TextField pNameField;
-    public TextField eField;
-    
 
-    public String title = "Set Up Page";
-    
+	public TextField fNameField;
+	public TextField mNameField;
+	public TextField lNameField;
+	public TextField pNameField;
+	public TextField eField;
+
+	public String title = "Set Up Page";
+
 	public SetUserUpPage() {
 		btn = new Button("Submit");
-        
-        
-		Label info = new Label("Set up your account:");
-        Label fNameLabel = new Label("First Name:");
-        fNameField = new TextField();
-        
-        Label mNameLabel = new Label("Middle Name:");
-        mNameField = new TextField();
-        
-        Label lNameLabel = new Label("Last Name:");
-        lNameField = new TextField();
-        
-        Label pNameLabel = new Label("Preferred Name:");
-        pNameField = new TextField();
-        
-        Label eLabel = new Label("email:");
-        eField = new TextField();
-        
-        GridPane grid = new GridPane();
-        grid.setPadding(new Insets(10, 10, 10, 10));
-        
-        grid.setVgap(10);
-        grid.setHgap(10);
 
-        grid.add(info, 0, 0);
-        grid.add(fNameLabel, 0, 1);
-        grid.add(fNameField, 1, 1);
-        grid.add(mNameLabel, 0, 2);
-        grid.add(mNameField, 1, 2);
-        grid.add(lNameLabel, 0, 3);
-        grid.add(lNameField, 1, 3);
-        grid.add(pNameLabel, 0, 4);
-        grid.add(pNameField, 1, 4);
-        grid.add(eLabel, 0, 5);
-        grid.add(eField, 1, 5);
-        grid.add(btn, 1, 8);
-        
-        BorderPane totalPage = new BorderPane();
-        totalPage.setCenter(grid);
-        grid.setAlignment(Pos.CENTER);
-        scene = new Scene(totalPage, App.WIDTH, App.HEIGHT);
+		Label info = new Label("Set up your account:");
+		Label fNameLabel = new Label("First Name:");
+		fNameField = new TextField();
+
+		Label mNameLabel = new Label("Middle Name:");
+		mNameField = new TextField();
+
+		Label lNameLabel = new Label("Last Name:");
+		lNameField = new TextField();
+
+		Label pNameLabel = new Label("Preferred Name:");
+		pNameField = new TextField();
+
+		Label eLabel = new Label("email:");
+		eField = new TextField();
+
+		GridPane grid = new GridPane();
+		grid.setPadding(new Insets(10, 10, 10, 10));
+
+		grid.setVgap(10);
+		grid.setHgap(10);
+
+		grid.add(info, 0, 0);
+		grid.add(fNameLabel, 0, 1);
+		grid.add(fNameField, 1, 1);
+		grid.add(mNameLabel, 0, 2);
+		grid.add(mNameField, 1, 2);
+		grid.add(lNameLabel, 0, 3);
+		grid.add(lNameField, 1, 3);
+		grid.add(pNameLabel, 0, 4);
+		grid.add(pNameField, 1, 4);
+		grid.add(eLabel, 0, 5);
+		grid.add(eField, 1, 5);
+		grid.add(btn, 1, 8);
+
+		BorderPane totalPage = new BorderPane();
+		totalPage.setCenter(grid);
+		grid.setAlignment(Pos.CENTER);
+		scene = new Scene(totalPage, App.WIDTH, App.HEIGHT);
 	}
-	       
-	
+
 	public void clearFields() {
 		fNameField.clear();
 		lNameField.clear();
@@ -85,23 +82,21 @@ public class SetUserUpPage {
 		pNameField.clear();
 		eField.clear();
 	}
-	
+
 	public void updateUserInfo() {
-		//check if name and email requirements are met
+		// check if name and email requirements are met
 		u.firstName = fNameField.getText();
 		u.lastName = lNameField.getText();
 		u.middleName = mNameField.getText();
 		u.email = eField.getText();
 
-		if(pNameField.getText().length() == 0) {
+		if (pNameField.getText().length() == 0) {
 			u.preferredName = u.firstName;
 		} else {
 			u.preferredName = pNameField.getText();
 		}
-		
+
 		u.infoSetup = true;
 	}
 
-   
 }
-

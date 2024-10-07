@@ -21,6 +21,5 @@ public class User {
 		infoSetup = false;
 		passwordIsResetOTP = false;
 	}
-	
-	
+
 }
