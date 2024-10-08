@@ -12,19 +12,41 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
  
+
+/**
+ * <p> App class for JavaFX </p>
+ * 
+ * <p> Description: This class contains the window and scene setup </p>
+ */
 public class App extends Application {
 	
+	/**
+	 * window width and height constants
+	 */
 	public static final int WIDTH = 1200;
 	public static final int HEIGHT = 700;
 	
+	/**
+	 * ArrayList object for users
+	 */
 	public static ArrayList<User> users;
     
+	/**
+	 * main method to launch the JavaFX app
+	 * 
+	 * @param args	Standard Java main method argument for passing in command line args
+	 */
 	public static void main(String[] args) {
 	    launch(args);
 	}
     
+	/**
+	 * This method initializes all scenes within the app and initializes the users ArrayList.
+	 * The initial user is created and the application flow is implemented
+	 */
     public void start(Stage primaryStage) {
     	
+    	// init users, along with a special case for the first user who is an admin
     	users = new ArrayList<User>();
     	User first = new User();
     	first.password = "first".toCharArray();
@@ -34,6 +56,7 @@ public class App extends Application {
     	
     	
     	//There are 100 dummy admin users with username a followed by a number and password a
+    	// TODO not safe, can use to login as admin
     	for(int i=0;i<100;i++) {
 	    	User convenience = new User();
 	    	convenience.password = "a".toCharArray();
@@ -87,11 +110,17 @@ public class App extends Application {
         });
         
         
-        //Sets the transition for the normal login page
+        //Handle login button event on login page
         loginPage.btn.setOnAction(e ->{
         	
-        	//Attempt to login
-        	int res = loginPage.login(users,loginPage.userField.getText(),loginPage.passwordField.getText(),loginPage.comboBox.getSelectionModel().getSelectedItem());
+        	//Attempt to login, get result
+        	int res = loginPage.login(
+        			users,
+        			loginPage.userField.getText(),
+        			loginPage.passwordField.getText(),
+        			loginPage.comboBox.getSelectionModel().getSelectedItem()
+    			);
+        	// branch from login result
         	if(res == -1) {
         		//Error message
         		Alert alert = new Alert(AlertType.ERROR);
@@ -105,7 +134,7 @@ public class App extends Application {
         		User u = users.get(res);
         		if(u.infoSetup) {
         			
-        			//Pass information to home page
+        			//Authenticated a registered user, going to home page
                 	System.out.println("Going to HomePage - passing user information along");
 
         			homePage.u = u;
@@ -117,7 +146,8 @@ public class App extends Application {
 		    		primaryStage.setTitle(homePage.title);
             		primaryStage.setScene(homePage.scene);
         		} else {
-        			//Pass information to set up page
+        			
+        			//Got one time password, go to user setup
                 	System.out.println("Going to SetUserUpPage - passing user information along");
 
         			setUpPage.u=u;
@@ -127,30 +157,33 @@ public class App extends Application {
             		primaryStage.setScene(setUpPage.scene);
         		}
         	} else {
+        		// need password reset
         		if(res == -2) {
+        			// password reset OTP expired, show alert
         			Alert alert = new Alert(AlertType.ERROR);
             		alert.setHeaderText("Error");
             		alert.setContentText("Reset password expired.");
             		alert.showAndWait();
 
         		} else {
-        		res += 10;
-        		res = -res;
-        		User u = users.get(res);
-
-        		//send to password reset page
-            	System.out.println("Going to PasswordResetPage - passing user information along");
-
-        		prPage.u=u;
-        		prPage.clearFields();
-    			primaryStage.setTitle(prPage.title);
-        		primaryStage.setScene(prPage.scene);
+        			//valid password reset OTP, go to reset page
+	        		res += 10;
+	        		res = -res;
+	        		User u = users.get(res);
+	
+	        		//send to password reset page
+	            	System.out.println("Going to PasswordResetPage - passing user information along");
+	
+	        		prPage.u=u;
+	        		prPage.clearFields();
+	    			primaryStage.setTitle(prPage.title);
+	        		primaryStage.setScene(prPage.scene);
         		}
         	}
         	
         });
         
-        //Set the invite button for the login page
+        //Set the invite button event on login page
         loginPage.inviteLogin.setOnAction(e ->{
         	
         	//Confirm valid invite code
@@ -178,7 +211,7 @@ public class App extends Application {
         	//confirm valid set up 
         	String temp = invitePage.updateUserInfo();
         	if (temp.equals("valid")) {
-        		//Route to login page
+        		//Successful setup, go to login page
             	System.out.println("Going to LoginPage");
 
         		loginPage.clearFields();
@@ -194,11 +227,11 @@ public class App extends Application {
         	
         });
         
-        
+        // Set action for password reset page
         prPage.btn.setOnAction(e -> {
         	String temp = prPage.updateUserInfo();
         	if (temp.equals("valid")) {
-        		//Route to login page
+        		// Successful reset, return to login page
             	System.out.println("Going to LoginPage");
         		loginPage.clearFields();
         		primaryStage.setTitle(loginPage.title);
@@ -212,8 +245,9 @@ public class App extends Application {
         	}
         });
         
+        // display welcome page
     	primaryStage.setTitle("Welcome Page");
-        primaryStage.setScene(initPage.scene); // Start with Scene 1
+        primaryStage.setScene(initPage.scene); // Start with welcome page
         primaryStage.show();
         
         
@@ -239,10 +273,5 @@ public class App extends Application {
     	return false;
     }
     
-    
-    
-    
-    
-    
-    
+
 }

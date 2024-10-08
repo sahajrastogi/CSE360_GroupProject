@@ -2,6 +2,9 @@ package asuHelloWorldJavaFX;
 
 import java.time.LocalTime;
 
+/**
+ * class for user
+ */
 public class User {
 	public boolean isAdmin = false;
 	public boolean isStudent = false;
@@ -17,7 +20,10 @@ public class User {
 	public String middleName = "";
 	public String lastName = "";
 	public String preferredName = "";
-
+	
+	/**
+	 * constructor: default to needing OTP, not having info, not needing password reset
+	 */
 	public User() {
 		passwordIsInviteCode = true;
 		infoSetup = false;

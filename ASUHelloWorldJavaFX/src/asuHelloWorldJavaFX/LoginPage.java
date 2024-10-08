@@ -20,6 +20,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
+/**
+ * <p> class to set up the login page scene in JavaFX and perform login verification </p>
+ */
+
 public class LoginPage {
 
 	public Scene scene;
@@ -32,7 +36,10 @@ public class LoginPage {
 	public PasswordField passwordField;
 	public PasswordField inviteField;
 	public ComboBox<String> comboBox;
-
+	
+	/**
+	 * Constructor that sets up all the interactive elements in the scene
+	 */
 	public LoginPage() {
 		btn = new Button("Submit");
 		inviteLogin = new Button("Create Account");
@@ -78,7 +85,7 @@ public class LoginPage {
 		grid.setAlignment(Pos.CENTER);
 		scene = new Scene(totalPage, App.WIDTH, App.HEIGHT);
 	}
-
+	
 	public void updateUser(String s) {
 		currUser = s;
 	}
@@ -88,8 +95,14 @@ public class LoginPage {
 		passwordField.clear();
 		inviteField.clear();
 	}
-
+	
+	/**
+	 * This method validates login inputs received in the login page.
+	 * Take in the users ArrayList and page inputs and returns either the user index, -1 if user not found,
+	 * -2 if the user has an expired password reset OTP, and -userIndex - 10 if there is an unexpired password reset OTP
+	 */
 	public int login(ArrayList<User> users, String username, String password, String role) {
+		// linear search over users
 		for (int i = 0; i < users.size(); i++) {
 
 			User u = users.get(i);
@@ -108,11 +121,7 @@ public class LoginPage {
 					return -2;
 				}
 			}
-
-//			// confirm that username and password match
-//			if (u.passwordIsResetOTP && (new String(u.password)).equals(password) && username.equals(u.username)) {
-//				return -1 * i - 10;
-//			}
+			
 			if (!u.passwordIsInviteCode && (new String(u.password)).equals(password) && username.equals(u.username)) {
 				return i;
 			}

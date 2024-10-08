@@ -18,6 +18,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
+/**
+ * <p> class for page that handles invite OTPs and account creation </p>
+ */
 public class InvitePage {
 
 	public Scene scene;
@@ -32,6 +35,9 @@ public class InvitePage {
     public PasswordField passwordField;
     public PasswordField cPasswordField;
     
+    /**
+     * constructor that places the text entry boxes into the scene
+     */
 	public InvitePage() {
 		btn = new Button("Create Account");
         
@@ -75,11 +81,18 @@ public class InvitePage {
 		currUser = s;
 	} 
 	
+	/**
+	 * method to verify if the user's OTP is correct
+	 * @param users ArrayList of users
+	 * @param invite OTP submitted by user
+	 * @return index of user if OTP is found, otherwise -1
+	 */
 	public int confirm(ArrayList<User> users, String invite) {
 		for(int i = 0; i<users.size();i++) {
 			User us = users.get(i);
 			
 			//need to check expire time here
+			//TODO
 			if(us.passwordIsInviteCode && (new String(us.password)).equals(invite)) {
 				return i;
 			}
@@ -87,6 +100,10 @@ public class InvitePage {
 		return -1;
 	}
 	
+	/**
+	 * Update the user's username and password. Checks for username uniqueness and several password criteria.
+	 * @return String containing an error message or "valid" if successful
+	 */
 	public String updateUserInfo() {
 		//retrieve username
 		String username = userField.getText();
@@ -123,6 +140,9 @@ public class InvitePage {
 		}
 	}
 	
+	/**
+	 * clear entry boxes
+	 */
 	public void clearFields() {
 		userField.clear();
 		passwordField.clear();

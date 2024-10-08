@@ -18,6 +18,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
+/**
+ * <p> Class that creates a page for password reset and validation </p>
+ */
 public class PasswordResetPage {
 
 	public Scene scene;
@@ -32,6 +35,9 @@ public class PasswordResetPage {
     public PasswordField passwordField;
     public PasswordField cPasswordField;
     
+    /**
+     * constructor that lays out the GUI
+     */
 	public PasswordResetPage() {
 		btn = new Button("Create Account");
         
@@ -69,7 +75,10 @@ public class PasswordResetPage {
         
 	}
 
-
+	/**
+	 * Method to check the password against several criteria and update the password if the criteria are all met
+	 * @return String with error message or "valid" if successful
+	 */
 	public String updateUserInfo() {
 		
 		//retrieve password
@@ -94,6 +103,9 @@ public class PasswordResetPage {
 		}
 	}
 	
+	/**
+	 * clear the text entry fields
+	 */
 	public void clearFields() {
 		passwordField.clear();
 		cPasswordField.clear();

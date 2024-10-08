@@ -16,6 +16,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
+/**
+ * <p> class that contains the page for setting personal information about a user</p>
+ */
 public class SetUserUpPage {
 
 	public Scene scene;
@@ -32,6 +35,9 @@ public class SetUserUpPage {
 
     public String title = "Set Up Page";
     
+    /**
+     * constructor that lays out the GUI
+     */
 	public SetUserUpPage() {
 		btn = new Button("Submit");
         
@@ -77,7 +83,9 @@ public class SetUserUpPage {
         scene = new Scene(totalPage, App.WIDTH, App.HEIGHT);
 	}
 	       
-	
+	/**
+	 * method to clear all input fields in the GUI
+	 */
 	public void clearFields() {
 		fNameField.clear();
 		lNameField.clear();
@@ -86,13 +94,17 @@ public class SetUserUpPage {
 		eField.clear();
 	}
 	
+	/**
+	 * Store all entered fields inside 
+	 */
 	public void updateUserInfo() {
-		//check if name and email requirements are met
+		// TODO check if name and email requirements are met
 		u.firstName = fNameField.getText();
 		u.lastName = lNameField.getText();
 		u.middleName = mNameField.getText();
 		u.email = eField.getText();
-
+		
+		// store preferred name if provided, otherwise set it as the first name
 		if(pNameField.getText().length() == 0) {
 			u.preferredName = u.firstName;
 		} else {

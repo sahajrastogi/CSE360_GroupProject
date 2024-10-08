@@ -15,6 +15,9 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+/**
+ * <p> Startup page for first user </p>
+ */
 public class InitialPage {
 
 	public Scene scene;
@@ -22,9 +25,11 @@ public class InitialPage {
     public TextField textField;
 
 	public InitialPage() {
+		// show first invite code
         Label intro = new Label("Your invite code is \"first\"");
         //intro.setFont(new Font("Arial", 20));
-
+        
+        // button to take user to login page
         btn = new Button("Get Started Here");
 		
 		GridPane grid = new GridPane();

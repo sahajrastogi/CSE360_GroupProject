@@ -30,6 +30,9 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+/**
+ * <p> This class sets up the home page for a given user and role </p>
+ */
 public class HomePage {
 
 	public Scene scene;
@@ -39,7 +42,10 @@ public class HomePage {
     public String role;
     public User u;
     public String title = "Home Page";
-
+    
+    /**
+     * Constructor that creates basic home page
+     */
 	public HomePage() {
 		
 		logout = new Button("Logout");
@@ -55,7 +61,9 @@ public class HomePage {
         scene = new Scene(grid, App.WIDTH, App.HEIGHT);
 	}
 	
-	//Set scenes differently based on the role they logged in with
+	/**
+	 * read the role attribute and set up the elements of the scene accordingly
+	 */
 	public void setSceneFromRole(){
 		if(role == "Student") {
 			setStudentScene();
@@ -66,7 +74,11 @@ public class HomePage {
 		}
 	}
 	
-	
+	/**
+	 * Administrator page
+	 * 
+	 * Show a list of users, options to create a new user with a one-time password, and reset a user's password
+	 */
 	public void setAdminScene() {
 
 		
@@ -81,7 +93,7 @@ public class HomePage {
         ObservableList<String> items = FXCollections.observableArrayList();
 
         
-        // Creating a ListView
+        // Creating a ListView, show all registered users
         for(User u : App.users) {
         	if(!u.passwordIsInviteCode) {
         		items.add(u.username);
@@ -89,7 +101,7 @@ public class HomePage {
         }
         ListView<String> userList = new ListView<>(items);
         
-       
+        // options to generate OTP for new user
         Label inviteGenerate = new Label("Generate an invite code for a new user:");
         Label roleLabel = new Label("Select Role(s) for the new user:");
         Label userListLabel = new Label("User List:");
@@ -103,7 +115,7 @@ public class HomePage {
         CheckBox checkInstructor = new CheckBox("Instructor");
         CheckBox checkAdmin = new CheckBox("Admin");
 
-        
+        // options to delete or reset a user
         Button del = new Button("Delete User");
         Button reset = new Button("Reset User");
         Label resetField = new Label("Code:");
@@ -130,7 +142,7 @@ public class HomePage {
         editUser.getChildren().addAll(del,reswrap,upd, update);
         
         
-        
+        // list selection handling
         userList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
         	int x = App.indexFromUsername(newValue);
         	if(x != -1) {
@@ -141,7 +153,7 @@ public class HomePage {
         	}
         });
         
-        
+       // deletion logic and confirmation
        del.setOnAction(e->{
     	   if(userList.getSelectionModel().getSelectedItem() == null) {
        		Alert alert = new Alert(AlertType.ERROR);
@@ -172,7 +184,7 @@ public class HomePage {
 	       	}
        });
         
-        
+        // options to update a user
         update.setOnAction(e ->{
         	if(userList.getSelectionModel().getSelectedItem() == null) {
         		Alert alert = new Alert(AlertType.ERROR);
@@ -189,7 +201,7 @@ public class HomePage {
         	
         });
         
-        
+        // reset user's password with a OTP for next login
         reset.setOnAction(e ->{
         	if(userList.getSelectionModel().getSelectedItem() == null) {
         		Alert alert = new Alert(AlertType.ERROR);
@@ -211,6 +223,7 @@ public class HomePage {
 	        	resetField.setText("Code: " + code);
 	        	us.password = code.toCharArray();
 	        	us.passwordIsResetOTP = true;
+	        	// OTP expires in 6 hrs after reset
 	        	us.expireTime = LocalTime.now().plusHours(6);
         	}
         });
@@ -233,7 +246,7 @@ public class HomePage {
         grid.add(editUser, 2, 8);
 
 
-        	
+        // new user/invite code generation
         btn.setOnAction(e ->{
         	
         	//check roleLabel selected
@@ -275,6 +288,9 @@ public class HomePage {
         scene = new Scene(totalPage, App.WIDTH, App.HEIGHT);
 	}
 	
+	/**
+	 * Student view, just a role and username for now
+	 */
 	public void setStudentScene() {
 
 		GridPane grid = new GridPane();
@@ -293,6 +309,9 @@ public class HomePage {
         scene = new Scene(totalPage, App.WIDTH, App.HEIGHT);
 	}
 	
+	/**
+	 * instructor view, just a role and username for now
+	 */
 	public void setInstructorScene() {
 
 		GridPane grid = new GridPane();
