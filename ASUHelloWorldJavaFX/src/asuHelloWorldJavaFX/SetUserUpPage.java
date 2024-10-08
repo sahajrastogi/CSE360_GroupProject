@@ -104,6 +104,7 @@ public class SetUserUpPage {
 		u.middleName = mNameField.getText();
 		u.email = eField.getText();
 		
+		
 		// store preferred name if provided, otherwise set it as the first name
 		if(pNameField.getText().length() == 0) {
 			u.preferredName = u.firstName;

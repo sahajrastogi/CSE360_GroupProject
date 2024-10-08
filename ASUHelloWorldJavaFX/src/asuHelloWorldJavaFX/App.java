@@ -91,14 +91,21 @@ public class App extends Application {
         //Sets the transition for the set up page to the home page and passes along user information
         setUpPage.btn.setOnAction(e -> {
         	//need to do alerts if invalid name or password
-        	System.out.println("Going to HomePage");
-
-        	setUpPage.updateUserInfo();
-        	homePage.u = setUpPage.u;
-			homePage.role = setUpPage.role;
-			homePage.setSceneFromRole();
-        	primaryStage.setTitle(homePage.title);
-        	primaryStage.setScene(homePage.scene);
+        	
+        	if(setUpPage.fNameField.getText().equals("") || setUpPage.lNameField.getText().equals("") || setUpPage.eField.getText().equals("")){
+        		Alert alert = new Alert(AlertType.ERROR);
+        		alert.setHeaderText("Error");
+        		alert.setContentText("Missing field(s).");
+        		alert.showAndWait();
+        	} else {
+	        	System.out.println("Going to HomePage");
+	        	setUpPage.updateUserInfo();
+	        	homePage.u = setUpPage.u;
+				homePage.role = setUpPage.role;
+				homePage.setSceneFromRole();
+	        	primaryStage.setTitle(homePage.title);
+	        	primaryStage.setScene(homePage.scene);
+        	}
         });
 
         //sets transition for the home page
