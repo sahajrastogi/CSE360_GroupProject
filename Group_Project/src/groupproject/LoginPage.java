@@ -87,13 +87,10 @@ public class LoginPage {
 		scene = new Scene(totalPage, App.WIDTH, App.HEIGHT);
 	}
 	
-	public void updateUser(String s) {
-		currUser = s;
-	}
-	
 	/**
 	 * Clear all text entry fields
 	 */
+
 	public void clearFields() {
 		userField.clear();
 		passwordField.clear();

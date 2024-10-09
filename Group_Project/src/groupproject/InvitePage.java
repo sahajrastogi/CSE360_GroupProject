@@ -77,9 +77,6 @@ public class InvitePage {
         
 	}
 	
-	public void updateUser(String s) {
-		currUser = s;
-	} 
 	
 	/**
 	 * method to verify if the user's OTP is correct
