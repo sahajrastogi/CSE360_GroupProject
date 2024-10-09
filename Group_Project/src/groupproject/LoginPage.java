@@ -27,6 +27,7 @@ import javafx.stage.Stage;
 public class LoginPage {
 
 	public Scene scene;
+	// TODO refactor name to be more descriptive
 	public Button btn;
 	public Button inviteLogin;
 	public String title = "Login Page";
@@ -89,7 +90,10 @@ public class LoginPage {
 	public void updateUser(String s) {
 		currUser = s;
 	}
-
+	
+	/**
+	 * Clear all text entry fields
+	 */
 	public void clearFields() {
 		userField.clear();
 		passwordField.clear();
