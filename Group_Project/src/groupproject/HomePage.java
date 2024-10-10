@@ -223,8 +223,8 @@ public class HomePage {
 	        	resetField.setText("Code: " + code);
 	        	us.password = code.toCharArray();
 	        	us.passwordIsResetOTP = true;
-	        	// OTP expires in 6 hrs after reset
-	        	us.expireTime = LocalTime.now().plusHours(6);
+	        	// OTP expires in 1 hr after reset
+	        	us.expireTime = LocalTime.now().plusHours(1);
         	}
         });
         

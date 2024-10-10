@@ -87,10 +87,10 @@ public class LoginPage {
 		scene = new Scene(totalPage, App.WIDTH, App.HEIGHT);
 	}
 	
+	
 	/**
 	 * Clear all text entry fields
 	 */
-
 	public void clearFields() {
 		userField.clear();
 		passwordField.clear();
@@ -116,6 +116,11 @@ public class LoginPage {
 			
 			//confirm that username and password match
 			if(u.passwordIsResetOTP && (new String(u.password)).equals(password) && username.equals(u.username)) {
+				System.out.println("Here");
+				System.out.println(LocalTime.now().isBefore(u.expireTime));
+				System.out.println(LocalTime.now());
+				System.out.println(u.expireTime);
+
 				if(LocalTime.now().isBefore(u.expireTime)) {
 					return -1*i - 10;
 				} else {

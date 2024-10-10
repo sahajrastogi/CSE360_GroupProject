@@ -110,7 +110,7 @@ public class InvitePage {
 		String cpassword = cPasswordField.getText();
 
 		//Username and password checks
-		if(App.containsUsername(username)) {
+		if(App.users != null && App.containsUsername(username)) {
 			return "Username taken";
 		}
 		
